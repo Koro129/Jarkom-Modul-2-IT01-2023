@@ -400,8 +400,7 @@ Lakukan pengecekan dengan cara ping pada nodes client
 ![rjp](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/69a023d6-515b-475b-b2fe-1bff484c0a99)
 
 9. Soal : Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
-- prabukusuma
-Membuat konfigurasi /etc/nginx/sites-available/jarkom
+Membuat konfigurasi /etc/nginx/sites-available/jarkom ( port 8001 untuk wisanggeni, 8002 untuk prabukusuma, 8003 untuk abimanyu)
 ```
 server {
 
@@ -432,19 +431,24 @@ server {
  ```
 Kemudian jalankan command
 ```
-lynx http://10.69.3.2:8001
+ ln -s /etc/nginx/sites-available/arjuna.IT01 /etc/nginx/sites-enabled
+
+ service nginx restart
+ service php7.0-fpm start
 ```
 cara mengaksesnya dengan : 
 ```
 lynx http://10.64.3.4:8002
 ```
 ![prabukusuma](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/614b4536-495e-41bb-ae63-5528bff0c239)
-
+```
+lynx http://10.64.3.5:8003
+```
 ![abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/0aefb300-65da-43bd-921c-60669aca05e9)
-
+```
+lynx http://10.64.3.3:8001
+```
 ![wisanggeni](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/d047fec8-6e97-4f93-b6e0-b2efed832def)
-
-
 
 10. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
     - Prabakusuma:8001
