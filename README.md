@@ -155,10 +155,42 @@ Lakukan ping pada nodes client
 ![ping arjuna](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/dcff5203-64c1-4c7e-9496-010ee3ab39f6)
 
 3. Soal : Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
-
+Menambahkan konfigurasi dibawah pada /etc/bind/named.conf.local
+```
+zone "abimanyu.it01.com" {
+    type master;
+    notify yes;
+    also-notify { 10.64.1.2; };
+    allow-transfer { 10.64.1.2; };
+    file "/etc/bind/jarkom/abimanyu.it01.com";
+};
+```
+Membuat folder zones dan memasukkan konfigurasi ke dalam file /etc/bind/zones/arjuna.it01.com.zone
+```
+\$TTL 604800
+@ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
+    2	; Serial
+    604800	; Refresh
+    86400	; Retry
+    2419200	; Expire
+    604800 ); Negative Cache TTL
+@ IN NS abimanyu.it01.com.
+@ IN A 10.64.3.5   ; IP abimanyu
+www IN CNAME abimanyu.it01.com.
+```
+Kemudian, restart bind dengan command
+```
+service bind9 restart
+```
+Lakukan pengecekan dengan cara ping pada nodes client ( Nakula / Sadewa )                                                                                                                                                                                                                           
+Tambahkan IP Yudhistira pada /etc/resolv.conf
+```
+nameserver 10.64.1.2
+```
+Lakukan ping pada nodes client
 ![ping abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/365af27c-fae0-40e5-a609-b0d6d3f09e5a)
 
-4. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
+5. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
 
 ![ping parikesit abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/01e69cb6-af01-4d84-84e5-c1952c9b15de)
 
