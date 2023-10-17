@@ -146,8 +146,7 @@ Kemudian, restart bind dengan command
 ```
 service bind9 restart
 ```
-Lakukan pengecekan dengan cara ping pada nodes client ( Nakula / Sadewa )
-
+Lakukan pengecekan dengan cara ping pada nodes client ( Nakula / Sadewa )                                                                                                                                                                                                                           
 Tambahkan IP Yudhistira pada /etc/resolv.conf
 ```
 nameserver 10.64.1.2
