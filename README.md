@@ -185,7 +185,7 @@ Lakukan ping pada nodes client
 ![ping abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/365af27c-fae0-40e5-a609-b0d6d3f09e5a)
 
 4. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
-Modifikasi file /etc/bind/zones/abimanyu.it11.com.zone
+Modifikasi file /etc/bind/zones/abimanyu.it01.com.zone
 ```
 \$TTL 604800
 @ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
@@ -450,10 +450,40 @@ lynx http://10.64.3.3:8001
 ```
 ![wisanggeni](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/d047fec8-6e97-4f93-b6e0-b2efed832def)
 
-10. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
+10. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh :
+```
     - Prabakusuma:8001
     - Abimanyu:8002
     - Wisanggeni:8003
+```
+Membuat konfigurasi pada node Arjuna untuk load balancer pada file /etc/nginx/sites-available/load-balancer
+```
+upstream arjuna.IT01.com  {
+ 	server 10.64.3.3:8001; #IP Wisanggeni
+    	server 10.64.3.4:8002; #IP Prabukusuma
+    	server 10.64.3.5:8003; #IP Abimanyu
+ }
+
+ server {
+ 	listen 80;
+ 	server_name arjuna.IT01.com;
+
+ 	location / {
+ 	proxy_pass http://arjuna.IT01.com;
+ 	}
+ }
+```
+Menjalankan command
+```
+ln -s /etc/nginx/sites-available/arjuna.IT01 /etc/nginx/sites-enabled
+service nginx restart
+```
+cara mengaksesnya dengan :
+```
+curl arjuna.it11.com
+```
+![curl](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/a61178c2-26ca-4020-a9c0-b1e00be2e2ac)
+
 
 11. Soal : Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy    
 install yang diperlukan di node abimanyu
