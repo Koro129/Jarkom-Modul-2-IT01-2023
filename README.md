@@ -190,27 +190,51 @@ nameserver 10.64.1.2
 Lakukan ping pada nodes client                                                                                                                                                                                                                                                                               
 ![ping abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/365af27c-fae0-40e5-a609-b0d6d3f09e5a)
 
-5. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
+4. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
+Modifikasi file /etc/bind/zones/abimanyu.it11.com.zone
+```
+\$TTL 604800
+@ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
+    2	; Serial
+    604800	; Refresh
+    86400	; Retry
+    2419200	; Expire
+    604800 ); Negative Cache TTL
+@ IN NS abimanyu.it01.com.
+@ IN A 10.64.3.5   ; IP abimanyu
+www IN CNAME abimanyu.it01.com.
+parikesit IN A 10.64.3.5
+www.parikesit IN CNAME parikesit.abimanyu.it01.com.
+```
+Kemudian, restart bind dengan command
+```
+service bind9 restart
+```
+Lakukan pengecekan dengan cara ping pada nodes client ( Nakula / Sadewa )                                                                                                                                                                                                                           
+Tambahkan IP Yudhistira pada /etc/resolv.conf
+```
+nameserver 10.64.1.2
+```
 
 ![ping parikesit abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/01e69cb6-af01-4d84-84e5-c1952c9b15de)
 
 5. Soal : Buat juga reverse domain untuk domain utama. (Abimanyu saja yang direverse)
 
 
-6. Soal : Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
+7. Soal : Agar dapat tetap dihubungi ketika DNS Server Yudhistira bermasalah, buat juga Werkudara sebagai DNS Slave untuk domain utama.
 
-7. Soal : Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu baratayuda.abimanyu.yyy.com dengan alias www.baratayuda.abimanyu.yyy.com yang didelegasikan dari Yudhistira ke Werkudara dengan IP menuju ke Abimanyu dalam folder Baratayuda.
+8. Soal : Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu baratayuda.abimanyu.yyy.com dengan alias www.baratayuda.abimanyu.yyy.com yang didelegasikan dari Yudhistira ke Werkudara dengan IP menuju ke Abimanyu dalam folder Baratayuda.
 
-8. Soal : Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui Werkudara dengan akses rjp.baratayuda.abimanyu.yyy.com dengan alias www.rjp.baratayuda.abimanyu.yyy.com yang mengarah ke Abimanyu.
+9. Soal : Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui Werkudara dengan akses rjp.baratayuda.abimanyu.yyy.com dengan alias www.rjp.baratayuda.abimanyu.yyy.com yang mengarah ke Abimanyu.
 
-9. Soal : Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
+10. Soal : Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
 
-10. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
+11. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
     - Prabakusuma:8001
     - Abimanyu:8002
     - Wisanggeni:8003
 
-11. Soal : Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy    
+12. Soal : Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy    
 install yang diperlukan di node abimanyu
 ```
 apt-get install -y apache2
