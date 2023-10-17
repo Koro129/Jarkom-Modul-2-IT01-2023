@@ -1,8 +1,114 @@
 # Jarkom-Modul-2-IT01-2023
 
-1. Soal : Yudhistira akan digunakan sebagai DNS Master, Werkudara sebagai DNS Slave, Arjuna merupakan Load Balancer yang terdiri dari beberapa Web Server yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Buatlah topologi dengan pembagian sebagai berikut. Folder topologi dapat diakses pada drive berikut
+1. Soal: Yudhistira akan digunakan sebagai DNS Master, Werkudara sebagai DNS Slave, Arjuna merupakan Load Balancer yang terdiri dari beberapa Web Server yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Buatlah topologi dengan pembagian sebagai berikut. Folder topologi dapat diakses pada drive berikut
+
 Network configuration :
 
+**Pandudewanata**
+
+```
+auto eth0
+iface eth0 inet dhcp
+
+auto eth1
+iface eth1 inet static
+	address 10.64.1.1
+	netmask 255.255.255.0
+
+auto eth2
+iface eth2 inet static
+	address 10.64.2.1
+	netmask 255.255.255.0
+
+auto eth3
+iface eth3 inet static
+	address 10.64.3.1
+	netmask 255.255.255.0
+```
+
+**DNSMASTERYudhistira**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.1.3
+	netmask 255.255.255.0
+	gateway 10.64.1.1
+```
+
+
+**DNSSLAVE-Werkudara**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.1.2
+	netmask 255.255.255.0
+	gateway 10.64.1.1
+```
+**Client-Nakula**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.2.2
+	netmask 255.255.255.0
+	gateway 10.64.2.1
+```
+
+**Client-Sadewa**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.2.3
+	netmask 255.255.255.0
+	gateway 10.64.2.1
+```
+
+**Prabukusuma**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.3.4
+	netmask 255.255.255.0
+	gateway 10.64.3.1
+```
+
+**Abimanyu**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.3.5
+	netmask 255.255.255.0
+	gateway 10.64.3.1
+```
+
+**Wisanggeni**
+
+```
+auto eth0
+iface eth0 inet static
+	address 10.64.3.3
+	netmask 255.255.255.0
+	gateway 10.64.3.1
+```
+
+**LB-Arjuna**
+
+```
+# Static config for eth0
+auto eth0
+iface eth0 inet static
+	address 10.64.3.2
+	netmask 255.255.255.0
+	gateway 10.64.3.1
+```  
+![topologi](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/113784446/8964c90b-726d-41db-b6d8-e4bf534af67b)
+
+  
 2. Soal : Buatlah website utama pada node arjuna dengan akses ke arjuna.yyy.com dengan alias www.arjuna.yyy.com dengan yyy merupakan kode kelompok.
 3. Soal : Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
 4. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
