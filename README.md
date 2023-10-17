@@ -110,6 +110,8 @@ iface eth0 inet static
 
   
 2. Soal : Buatlah website utama pada node arjuna dengan akses ke arjuna.yyy.com dengan alias www.arjuna.yyy.com dengan yyy merupakan kode kelompok.
+![ping arjuna](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/dcff5203-64c1-4c7e-9496-010ee3ab39f6)
+
 3. Soal : Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
 4. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
 5. Soal : Buat juga reverse domain untuk domain utama. (Abimanyu saja yang direverse)
