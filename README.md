@@ -151,7 +151,7 @@ Tambahkan IP Yudhistira pada /etc/resolv.conf
 ```
 nameserver 10.64.1.2
 ```
-Lakukan ping pada nodes client
+Lakukan ping pada nodes client                                                                                                                                                                                                                                                                               
 ![ping arjuna](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/dcff5203-64c1-4c7e-9496-010ee3ab39f6)
 
 3. Soal : Dengan cara yang sama seperti soal nomor 2, buatlah website utama dengan akses ke abimanyu.yyy.com dan alias www.abimanyu.yyy.com.
