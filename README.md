@@ -480,7 +480,7 @@ service nginx restart
 ```
 cara mengaksesnya dengan :
 ```
-curl arjuna.it11.com
+curl arjuna.it01.com
 ```
 ![curl](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/a61178c2-26ca-4020-a9c0-b1e00be2e2ac)
 
