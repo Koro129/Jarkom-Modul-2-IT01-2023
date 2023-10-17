@@ -1,0 +1,202 @@
+apt-get update && apt install nginx php php-fpm -y
+apt-get install unzip -y
+apt-get install -y apache2
+apt-get install libapache2-mod-php7.0
+
+url="https://drive.google.com/uc?export=download&id=17tAM_XDKYWDvF-JJix1x7txvTBEax7vX"
+
+curl -kLo "arjuna.IT01.com.zip" "$url" && unzip -q "arjuna.IT01.com.zip" && rm "arjuna.IT01.com.zip"
+
+mv arjuna.yyy.com arjuna.IT01.com
+
+rm -r /var/www/arjuna.IT01.com
+
+mv arjuna.IT01.com /var/www/
+
+echo '	 server {
+
+ 	listen 8003;
+
+ 	root /var/www/arjuna.IT01.com;
+
+ 	index index.php index.html index.htm;
+ 	server_name _;
+
+ 	location / {
+ 			try_files $uri $uri/ /index.php?$query_string;
+ 	}
+
+ 	# pass PHP scripts to FastCGI server
+ 	location ~ \.php$ {
+ 	include snippets/fastcgi-php.conf;
+ 	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+ 	}
+
+ location ~ /\.ht {
+ 			deny all;
+ 	}
+
+ 	error_log /var/log/nginx/jarkom_error.log;
+ 	access_log /var/log/nginx/jarkom_access.log;
+ }' > /etc/nginx/sites-available/arjuna.IT01
+
+ ln -s /etc/nginx/sites-available/arjuna.IT01 /etc/nginx/sites-enabled
+
+ rm -rf /etc/nginx/sites-enabled/default 
+ service nginx restart
+ service php7.0-fpm start
+
+
+echo ' Listen 80
+
+Listen 14000
+
+Listen 14400
+
+<IfModule ssl_module>
+	Listen 443
+</IfModule>
+
+<IfModule mod_gnutls.c>
+	Listen 443
+</IfModule>' > /etc/apache2/ports.conf
+
+
+url="https://drive.google.com/uc?export=download&id=1a4V23hwK9S7hQEDEcv9FL14UkkrHc-Zc"
+
+curl -kLo "abimanyu.IT01.com.zip" "$url" && unzip -q "abimanyu.IT01.com.zip" && rm "abimanyu.IT01.com.zip"
+
+mv abimanyu.yyy.com abimanyu.IT01
+
+rm -r /var/www/abimanyu.IT01
+
+mv abimanyu.IT01 /var/www/
+
+echo ' <VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+
+    Redirect permanent / http://www.abimanyu.IT01.com/
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>' > /etc/apache2/sites-available/000-default.conf
+
+
+echo ' <VirtualHost *:80>
+    ServerAdmin webmaster@abimanyu.IT01.com
+	ServerName abimanyu.IT01.com
+	ServerAlias www.abimanyu.IT01.com
+    DocumentRoot /var/www/abimanyu.IT01
+
+	<Directory /var/www/abimanyu.IT01>
+     Options +FollowSymLinks -Multiviews
+     AllowOverride All
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>' > /etc/apache2/sites-available/abimanyu.IT01.com.conf
+
+echo 'RewriteEngine On
+RewriteBase /
+RewriteRule ^home$ index.php/home [L]
+' > /var/www/abimanyu.IT01/.htaccess
+
+
+url="https://drive.google.com/uc?export=download&id=1LdbYntiYVF_NVNgJis1GLCLPEGyIOreS"
+
+curl -kLo "parikesit.abimanyu.IT01.com.zip" "$url" && unzip -q "parikesit.abimanyu.IT01.com.zip" && rm "parikesit.abimanyu.IT01.com.zip"
+
+mv parikesit.abimanyu.yyy.com parikesit.abimanyu.IT01
+
+rm -r /var/www/parikesit.abimanyu.IT01
+
+mv parikesit.abimanyu.IT01 /var/www/
+
+mkdir /var/www/parikesit.abimanyu.IT01/secret
+
+echo ' <VirtualHost *:80>
+    ServerAdmin webmaster@abimanyu.IT01.com
+    ServerName parikesit.abimanyu.IT01.com
+    ServerAlias www.parikesit.abimanyu.IT01.com
+    DocumentRoot /var/www/parikesit.abimanyu.IT01
+
+    <Directory /var/www/parikesit.abimanyu.IT01/public>
+        Options +Indexes
+    </Directory>
+
+    <Directory /var/www/parikesit.abimanyu.IT01/secret>
+        Options -Indexes
+    </Directory>
+
+    ErrorDocument 403 /error/403.html
+    ErrorDocument 404 /error/404.html
+
+    Alias "/js" "/var/www/parikesit.abimanyu.IT01/public/js"
+
+    RewriteEngine On
+    RewriteRule (.)abimanyu(.)\.(jpg|png)$ /public/images/abimanyu.png [L,NC]
+
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+' > /etc/apache2/sites-available/parikesit.abimanyu.IT01.com.conf
+
+
+url="https://drive.google.com/uc?export=download&id=1pPSP7yIR05JhSFG67RVzgkb-VcW9vQO6"
+
+curl -kLo "rjp.baratayuda.abimanyu.IT01.com.zip" "$url" && unzip -q "rjp.baratayuda.abimanyu.IT01.com.zip" && rm "rjp.baratayuda.abimanyu.IT01.com.zip"
+
+mv rjp.baratayuda.abimanyu.yyy.com rjp.baratayuda.abimanyu.IT01
+
+rm -r /var/www/rjp.baratayuda.abimanyu.IT01
+
+mv rjp.baratayuda.abimanyu.IT01 /var/www/
+
+echo '<VirtualHost *:14000>
+    ServerAdmin webmaster@rjp.baratayuda.abimanyu.IT01.com
+    ServerName rjp.baratayuda.abimanyu.IT01.com
+	ServerAlias www.rjp.baratayuda.abimanyu.IT01.com
+    DocumentRoot /var/www/rjp.baratayuda.abimanyu.IT01
+
+	<Directory /var/www/rjp.baratayuda.abimanyu.IT01>
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require user Wayang
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+
+<VirtualHost *:14400>
+    ServerAdmin webmaster@rjp.baratayuda.abimanyu.IT01.com
+    ServerName rjp.baratayuda.abimanyu.IT01.com
+    DocumentRoot /var/www/rjp.baratayuda.abimanyu.IT01
+	ServerAlias www.rjp.baratayuda.abimanyu.IT01.com
+
+	<Directory /var/www/rjp.baratayuda.abimanyu.IT01>
+        AuthType Basic
+        AuthName "Restricted Content"
+        AuthUserFile /etc/apache2/.htpasswd
+        Require user Wayang
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>' > /etc/apache2/sites-available/rjp.baratayuda.abimanyu.IT01.com.conf
+
+a2ensite abimanyu.IT01.com.conf
+
+a2ensite parikesit.abimanyu.IT01.com.conf
+
+a2ensite rjp.baratayuda.abimanyu.IT01.com.conf
+
+htpasswd -b -c /etc/apache2/.htpasswd Wayang baratayudaIT01
+
+a2enmod rewrite
+
+service apache2 restart

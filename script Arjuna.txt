@@ -1,0 +1,21 @@
+apt-get update
+apt-get install nginx -y
+
+echo ' upstream arjuna.IT01.com  {
+ 	server 10.64.3.3:8001; #IP Wisanggeni
+    server 10.64.3.4:8002; #IP Prabukusuma
+    server 10.64.3.5:8003; #IP Abimanyu
+ }
+
+ server {
+ 	listen 80;
+ 	server_name arjuna.IT01.com;
+
+ 	location / {
+ 	proxy_pass http://arjuna.IT01.com;
+ 	}
+ }' > /etc/nginx/sites-available/arjuna.IT01
+
+ ln -s /etc/nginx/sites-available/arjuna.IT01 /etc/nginx/sites-enabled
+
+ service nginx restart

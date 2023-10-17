@@ -1,0 +1,42 @@
+apt-get update && apt install nginx php php-fpm -y
+apt-get install unzip -y
+
+url="https://drive.google.com/uc?export=download&id=17tAM_XDKYWDvF-JJix1x7txvTBEax7vX"
+
+curl -kLo "arjuna.IT01.com.zip" "$url" && unzip -q "arjuna.IT01.com.zip" && rm "arjuna.IT01.com.zip"
+
+mv arjuna.yyy.com arjuna.IT01.com
+
+mv arjuna.IT01.com /var/www/
+
+echo '	 server {
+
+ 	listen 8002;
+
+ 	root /var/www/arjuna.IT01.com;
+
+ 	index index.php index.html index.htm;
+ 	server_name _;
+
+ 	location / {
+ 			try_files $uri $uri/ /index.php?$query_string;
+ 	}
+
+ 	# pass PHP scripts to FastCGI server
+ 	location ~ \.php$ {
+ 	include snippets/fastcgi-php.conf;
+ 	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+ 	}
+
+ location ~ /\.ht {
+ 			deny all;
+ 	}
+
+ 	error_log /var/log/nginx/jarkom_error.log;
+ 	access_log /var/log/nginx/jarkom_access.log;
+ }' > /etc/nginx/sites-available/arjuna.IT01
+
+ ln -s /etc/nginx/sites-available/arjuna.IT01 /etc/nginx/sites-enabled
+
+ service nginx restart
+ service php7.0-fpm start

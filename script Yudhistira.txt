@@ -1,0 +1,88 @@
+#!/bin/bash
+
+config() {
+    if ! dpkg -l | grep -q bind9; then
+	su -c "apt-get install sudo"
+        sudo apt-get update
+        sudo apt-get install -y sudo bind9 nano
+    fi
+
+    # Create a zone configuration for "www.arjuna.it01.com"
+    bash -c 'cat <<EOL > /etc/bind/named.conf.local
+zone "arjuna.it01.com" {
+    type master;
+    notify yes;
+    also-notify { 10.64.1.2; };
+    allow-transfer { 10.64.1.2; };
+    file "/etc/bind/jarkom/arjuna.it01.com";
+};
+
+zone "abimanyu.it01.com" {
+    type master;
+    notify yes;
+    also-notify { 10.64.1.2; };
+    allow-transfer { 10.64.1.2; };
+    file "/etc/bind/jarkom/abimanyu.it01.com";
+};
+
+zone "3.64.10.in-addr.arpa" {
+    type master;
+    file "/etc/bind/jarkom/3.64.10.in-addr.arpa";
+};
+EOL'
+
+mkdir /etc/bind/jarkom
+
+    # Generate the DNS records in the zone file with updated TTL and CNAME
+    bash -c 'cat <<EOL > /etc/bind/jarkom/arjuna.it01.com
+\$TTL 604800
+@ IN SOA arjuna.it01.com. root.arjuna.it01.com. (
+    2	; Serial
+    604800	; Refresh
+    86400	; Retry
+    2419200	; Expire
+    604800 ); Negative Cache TTL
+@ IN NS arjuna.it01.com.
+@ IN A 10.64.3.2   ; IP arjuna
+@ IN AAAA ::1
+www in CNAME arjuna.it01.com.
+EOL'
+
+    # Generate the DNS records in the zone file with updated TTL and CNAME
+    bash -c 'cat <<EOL > /etc/bind/jarkom/abimanyu.it01.com
+\$TTL 604800
+@ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
+    2	; Serial
+    604800	; Refresh
+    86400	; Retry
+    2419200	; Expire
+    604800 ); Negative Cache TTL
+@ IN NS abimanyu.it01.com.
+@ IN A 10.64.3.5   ; IP abimanyu
+www IN CNAME abimanyu.it01.com.
+parikesit IN A 10.64.3.5
+www.parikesit IN CNAME parikesit.abimanyu.it01.com.
+ns1 IN A 10.64.1.2
+baratayuda IN NS ns1
+@ IN AAAA ::1
+EOL'
+
+    # Generate the DNS records in the zone file with updated TTL and CNAME
+    bash -c 'cat <<EOL > /etc/bind/jarkom/3.64.10.in-addr.arpa
+\$TTL 604800
+@ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
+    2	; Serial
+    604800	; Refresh
+    86400	; Retry
+    2419200	; Expire
+    604800 ); Negative Cache TTL
+3.64.10.in-addr.arpa. IN NS abimanyu.it01.com.
+5 IN PTR abimanyu.it01.com.
+EOL'
+
+    # Restart BIND to apply the new configuration using 'systemctl'
+    service bind9 restart
+}
+
+# Run the configure function
+config
