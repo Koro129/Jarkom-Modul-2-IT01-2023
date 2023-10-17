@@ -277,7 +277,7 @@ zone "abimanyu.IT01.com" {
         file "/var/lib/bind/abimanyu.IT01.com";
 };' >> /etc/bind/named.conf.local
 ```
-Membuat folder zones dan memasukkan konfigurasi ke dalam file /etc/bind/zones/slave.abimanyu.it11.com.zone
+Membuat folder zones dan memasukkan konfigurasi ke dalam file /etc/bind/zones/slave.abimanyu.it01.com.zone
 ```
 \$TTL 604800
 @ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
@@ -292,7 +292,7 @@ www IN CNAME abimanyu.it01.com.
 parikesit IN A 10.64.3.5
 www.parikesit IN CNAME parikesit.abimanyu.it01.com.
 ```
-Memasukkan konfigurasi ke dalam file /etc/bind/zones/slave.arjuna.it11.com.zone
+Memasukkan konfigurasi ke dalam file /etc/bind/zones/slave.arjuna.it01.com.zone
 ```
 \$TTL 604800
 @ IN SOA arjuna.it01.com. root.arjuna.it01.com. (
@@ -314,18 +314,144 @@ Lakukan pengecekan dengan cara ping pada nodes client
 
 ![slave 1](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/c9f494a7-37c4-4ed5-9ac8-f94d15d993fe)
 ![slave 2](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/0ead331f-c2ce-40a0-a1ac-bffc28f51f6d)
-9. Soal : Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu baratayuda.abimanyu.yyy.com dengan alias www.baratayuda.abimanyu.yyy.com yang didelegasikan dari Yudhistira ke Werkudara dengan IP menuju ke Abimanyu dalam folder Baratayuda.
 
-10. Soal : Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui Werkudara dengan akses rjp.baratayuda.abimanyu.yyy.com dengan alias www.rjp.baratayuda.abimanyu.yyy.com yang mengarah ke Abimanyu.
+7. Soal : Seperti yang kita tahu karena banyak sekali informasi yang harus diterima, buatlah subdomain khusus untuk perang yaitu baratayuda.abimanyu.yyy.com dengan alias www.baratayuda.abimanyu.yyy.com yang didelegasikan dari Yudhistira ke Werkudara dengan IP menuju ke Abimanyu dalam folder Baratayuda.
+Mengubah file /etc/bind/zones/abimanyu.it01.com.zone pada Yudhistira
+```
+\$TTL 604800
+@ IN SOA abimanyu.it01.com. root.abimanyu.it01.com. (
+    2	; Serial
+    604800	; Refresh
+    86400	; Retry
+    2419200	; Expire
+    604800 ); Negative Cache TTL
+@ IN NS abimanyu.it01.com.
+@ IN A 10.64.3.5   ; IP abimanyu
+www IN CNAME abimanyu.it01.com.
+parikesit IN A 10.64.3.5
+www.parikesit IN CNAME parikesit.abimanyu.it01.com.
+ns1 IN A 10.64.1.2
+baratayuda IN NS ns1
+@ IN AAAA ::1
+```
+Kemudian tambahkan konfigurasi pada Werkudara, pada file /etc/bind/named.conf.local
+```
+zone "baratayuda.abimanyu.IT01.com" {
+        type master;
+        file "/etc/bind/delegasi/baratayuda.abimanyu.IT01.com";
+};' >> /etc/bind/named.conf.local
+```
+Membuat folder zones dan memasukkan konfigurasi ke dalam file /etc/bind/zones/baratayuda.abimanyu.it01.com.zone
+```
+;
+;BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     baratayuda.abimanyu.IT01.com. root.baratayuda.abimanyu.IT01.com. (
+                2               ; Serial
+                604800          ; Refresh
+                86400           ; Retry
+                2419200         ; Expire
+                604800 )        ; Negative Cache TTL
+;
+@       IN      NS      baratayuda.abimanyu.IT01.com.
+@       IN      A       10.64.3.5	; IP abimanyu
+www     IN      CNAME	baratayuda.abimanyu.IT01.com.
+```
+Kemudian, restart bind dengan command
+```
+service bind9 restart
+```
+Lakukan pengecekan dengan cara ping pada nodes client 
 
-11. Soal : Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
+![baratayuda](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/258b6047-05e1-4d35-b57a-01dc43fed41d)
 
-12. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
+8. Soal : Untuk informasi yang lebih spesifik mengenai Ranjapan Baratayuda, buatlah subdomain melalui Werkudara dengan akses rjp.baratayuda.abimanyu.yyy.com dengan alias www.rjp.baratayuda.abimanyu.yyy.com yang mengarah ke Abimanyu.
+Menambahkan konfigurasi pada /etc/bind/named.conf.local
+```
+zone "rjp.baratayuda.abimanyu.it01.com" {
+    type master;
+    file "/etc/bind/zones/rjp.baratayuda.abimanyu.it01.com.zone";
+};
+```
+Membuat file /etc/bind/zones/rjp.baratayuda.abimanyu.it01.com.zone pada Werkudara
+```
+;
+;BIND data file for local loopback interface
+;
+$TTL    604800
+@       IN      SOA     baratayuda.abimanyu.IT01.com. root.baratayuda.abimanyu.IT01.com. (
+                2               ; Serial
+                604800          ; Refresh
+                86400           ; Retry
+                2419200         ; Expire
+                604800 )        ; Negative Cache TTL
+;
+@       IN      NS      baratayuda.abimanyu.IT01.com.
+@       IN      A       10.64.3.5	; IP abimanyu
+www     IN      CNAME	baratayuda.abimanyu.IT01.com.
+```
+Kemudian, restart bind dengan command
+```
+service bind9 restart
+```
+Lakukan pengecekan dengan cara ping pada nodes client 
+
+![rjp](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/69a023d6-515b-475b-b2fe-1bff484c0a99)
+
+9. Soal : Arjuna merupakan suatu Load Balancer Nginx dengan tiga worker (yang juga menggunakan nginx sebagai webserver) yaitu Prabakusuma, Abimanyu, dan Wisanggeni. Lakukan deployment pada masing-masing worker.
+- prabukusuma
+Membuat konfigurasi /etc/nginx/sites-available/jarkom
+```
+server {
+
+ 	listen 8002;
+
+ 	root /var/www/arjuna.IT01.com;
+
+ 	index index.php index.html index.htm;
+ 	server_name _;
+
+ 	location / {
+ 			try_files $uri $uri/ /index.php?$query_string;
+ 	}
+
+ 	# pass PHP scripts to FastCGI server
+ 	location ~ \.php$ {
+ 	include snippets/fastcgi-php.conf;
+ 	fastcgi_pass unix:/var/run/php/php7.0-fpm.sock;
+ 	}
+
+ location ~ /\.ht {
+ 			deny all;
+ 	}
+
+ 	error_log /var/log/nginx/jarkom_error.log;
+ 	access_log /var/log/nginx/jarkom_access.log;
+ }
+ ```
+Kemudian jalankan command
+```
+lynx http://10.69.3.2:8001
+```
+cara mengaksesnya dengan : 
+```
+lynx http://10.64.3.4:8002
+```
+![prabukusuma](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/614b4536-495e-41bb-ae63-5528bff0c239)
+
+![abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/0aefb300-65da-43bd-921c-60669aca05e9)
+
+![wisanggeni](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/d047fec8-6e97-4f93-b6e0-b2efed832def)
+
+
+
+10. Soal : Kemudian gunakan algoritma Round Robin untuk Load Balancer pada Arjuna. Gunakan server_name pada soal nomor 1. Untuk melakukan pengecekan akses alamat web tersebut kemudian pastikan worker yang digunakan untuk menangani permintaan akan berganti ganti secara acak. Untuk webserver di masing-masing worker wajib berjalan di port 8001-8003. Contoh
     - Prabakusuma:8001
     - Abimanyu:8002
     - Wisanggeni:8003
 
-13. Soal : Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy    
+11. Soal : Selain menggunakan Nginx, lakukan konfigurasi Apache Web Server pada worker Abimanyu dengan web server www.abimanyu.yyy.com. Pertama dibutuhkan web server dengan DocumentRoot pada /var/www/abimanyu.yyy    
 install yang diperlukan di node abimanyu
 ```
 apt-get install -y apache2
