@@ -1,8 +1,0 @@
-#!/bin/bash
-
-apt-get update
-apt-get install lynx -y
-
-echo 'nameserver 10.64.1.2 #IP Werkudara
-nameserver 10.64.1.3 #IP Yudistira
-nameserver 192.168.122.1' > /etc/resolv.conf
