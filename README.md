@@ -187,7 +187,7 @@ Tambahkan IP Yudhistira pada /etc/resolv.conf
 ```
 nameserver 10.64.1.2
 ```
-Lakukan ping pada nodes client
+Lakukan ping pada nodes client                                                                                                                                                                                                                                                                               
 ![ping abimanyu](https://github.com/Koro129/Jarkom-Modul-2-IT01-2023/assets/102176304/365af27c-fae0-40e5-a609-b0d6d3f09e5a)
 
 5. Soal : Kemudian, karena terdapat beberapa web yang harus di-deploy, buatlah subdomain parikesit.abimanyu.yyy.com yang diatur DNS-nya di Yudhistira dan mengarah ke Abimanyu.
